@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+           .asi
+           {
+            border: 0.2rem solid red;
+            background-color: red;
+            border-radius: 0.5rem;
+            position:absolute;
+            left:80%;
+            color:white;
+            text-decoration: none;
+            transition-property: all;
+            transition-duration: 20ms;
+            transition-timing-function: linear;
+            padding: 0px 1.5rem;
+
+           }
+           .asi:hover
+           {
+            border: 0.2rem solid rgb(175, 41, 41);
+            background-color: rgb(175, 41, 41); 
+           }
+    </style>
+
+    <script>
+        function updateRole(role) {
+            document.getElementById('roleInput').value = role; // Update the hidden input for the role
+            document.getElementById('selectedRole').textContent = role; // Show the selected role
+        }
+    </script>
+    
+</head>
+<body>
+    <div class="container text-center mt-5">
+        <h1>Welcome to A-Z Household Services</h1>
+        <p>Please log in or sign up to continue.</p>
+        <a href="/admin_login" class="asi" >Sign In as Admin</a>
+        <!-- Role Selection -->
+        <div class="btn-group mb-3">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Sign In As
+            </button>
+            <ul class="dropdown-menu">
+                <li><button class="dropdown-item" onclick="updateRole('Customer')">Customer</button></li>
+                <li><button class="dropdown-item" onclick="updateRole('Professional')">Professional</button></li>
+            </ul>
+        </div>
+
+        <h5 id="selectedRole">Select your role to log in</h5>
+
+        <!-- Login Form -->
+        <form method="POST" action="/login">
+            <input type="hidden" id="roleInput" name="role" value=""> <!-- Hidden input to store the selected role -->
+            <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Log In</button>
+        </form>
+
+        <!-- Sign Up Button -->
+        <a href="/customer_signup" class="btn btn-primary" style="margin-top: 2rem; background-color: green;" >Register as customer</a>
+        <a href="/professional_signup" class="btn btn-primary" style="margin-top: 2rem; margin-left: 1rem; background-color: green;" >Register as professional</a>
+        
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

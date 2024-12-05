@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">A-Z Household</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/professional_dashboard">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/professional_search">Search</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/professional_summary">Summary</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <h2>Today's Requests</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Request ID</th>
+                    <th>Customer Name</th>
+                    <th>Address</th>
+                    <th>Pincode</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if today_requests %}
+                    {% for request, customer_name, customer_address, customer_pincode in today_requests %}
+                    <tr>
+                        <td>{{ request.request_id }}</td>
+                        <td>{{ customer_name }}</td>
+                        <td>{{ customer_address }}</td>
+                        <td>{{ customer_pincode }}</td>
+                        <td>{{ request.service_status }}</td>
+                        <td>
+                            {% if request.service_status == 'Requested' %}
+                                <form action="{{ url_for('accept_request', request_id=request.request_id) }}" method="POST" style="display:inline;">
+                                    <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                                </form>
+                                <form action="{{ url_for('reject_request', request_id=request.request_id) }}" method="POST" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                                </form>
+                            {% else %}
+                                <button class="btn btn-secondary btn-sm" disabled>
+                                    {{ request.service_status }}
+                                </button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center">No requests for today.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+
+        <h2 class="text-center mt-5">Closed Services</h2>
+        <table class="table table-striped mt-4">
+            <thead>
+                <tr>
+                    <th>Service ID</th>
+                    <th>Customer Name</th>
+                    <th>Address</th>
+                    <th>Pincode</th>
+                    <th>Date of Completion</th>
+                    <th>Rating</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for service in closed_services %}
+                <tr>
+                    <td>{{ service.service_id }}</td>
+                    <td>{{ service.customer_name }}</td>
+                    <td>{{ service.address }}</td>
+                    <td>{{ service.pincode }}</td>
+                    <td>{{ service.date_of_completion.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ service.rating }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
