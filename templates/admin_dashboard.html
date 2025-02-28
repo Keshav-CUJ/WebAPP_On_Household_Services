@@ -5,137 +5,216 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/custom-admin_dashboard.css') }}" rel="stylesheet">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const currentTheme = localStorage.getItem("theme") || "light";
+            document.documentElement.setAttribute("data-theme", currentTheme);
+        });
+    </script>
+
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">A-Z Household</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-home me-2"></i>A-Z Services
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin_dashboard">Home</a>
+                        <a class="nav-link" href="/admin_dashboard">
+                            <i class="fas fa-dashboard me-1"></i>Home
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin_search">Search</a>
+                        <a class="nav-link" href="/admin_search">
+                            <i class="fas fa-search me-1"></i>Search
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin_summary">Summary</a>
+                        <a class="nav-link" href="/admin_summary">
+                            <i class="fas fa-chart-bar me-1"></i>Summary
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/logout">Logout</a>
+                        <a class="nav-link" href="/logout">
+                            <i class="fas fa-sign-out-alt me-1"></i>Logout
+                        </a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
-    <div class="container mt-5">
-        <h1>Welcome, Admin!</h1>
-        <p>Use the navigation bar to explore the sections.</p>
-    
+
+    <div class="container mt-5 loading">
+        <div class="d-flex align-items-center mb-4">
+            <i class="fas fa-user-shield fs-2 me-3 text-primary"></i>
+            <h1 class="mb-0">Welcome, Admin!</h1>
+        </div>
+        <p class="text-secondary">Use the navigation bar to explore the sections.</p>
+
         <!-- Form to Add New Service -->
-        <h3>Add New Service</h3>
-        <form method="POST" action="/admin_dashboard" class="mb-4">
-            <div class="mb-3">
-                <label for="service_name" class="form-label">Service Name</label>
-                <input type="text" id="service_name" name="service_name" class="form-control" required>
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-white">
+                <h3 class="mb-0">
+                    <i class="fas fa-plus-circle me-2 text-primary"></i>Add New Service
+                </h3>
             </div>
-            <div class="mb-3">
-                <label for="base_price" class="form-label">Base Price</label>
-                <input type="number" id="base_price" name="base_price" class="form-control" required>
+            <div class="card-body">
+                <form method="POST" action="/admin_dashboard">
+                    <div class="mb-3">
+                        <label for="service_name" class="form-label">
+                            <i class="fas fa-tag me-1"></i>Service Name
+                        </label>
+                        <input type="text" id="service_name" name="service_name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="base_price" class="form-label">
+                            Base Price (in Rupees)
+                        </label>
+                        <input type="number" id="base_price" name="base_price" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="time_required" class="form-label">
+                            <i class="fas fa-clock me-1"></i>Time Required (in days)
+                        </label>
+                        <input type="number" id="time_required" name="time_required" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">
+                            <i class="fas fa-align-left me-1"></i>Description
+                        </label>
+                        <textarea id="description" name="description" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-plus me-1"></i>Add Service
+                    </button>
+                </form>
             </div>
-            <div class="mb-3">
-                <label for="time_required" class="form-label">Time Required (in hours)</label>
-                <input type="number" id="time_required" name="time_required" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
-                <textarea id="description" name="description" class="form-control" rows="3" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Add Service</button>
-        </form>
+        </div>
 
-           <!-- Services Table -->
-    <h3>Existing Services</h3>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Service ID</th>
-                <th>Service Name</th>
-                <th>Base Price</th>
-                <th>Time Required</th>
-                <th>Description</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for service in services %}
-            <tr>
-                <td>{{ service.service_id }}</td>
-                <td>{{ service.service_name }}</td>
-                <td>{{ service.base_price }}</td>
-                <td>{{ service.time_required }}</td>
-                <td>{{ service.description }}</td>
-                <td>
-                    <a href="/edit_service/{{ service.service_id }}" class="btn btn-warning btn-sm">Edit</a>
-                    <form action="/delete_service/{{ service.service_id }}" method="POST" style="display:inline;">
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        <!-- Services Table -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-white">
+                <h3 class="mb-0">
+                    <i class="fas fa-list me-2 text-primary"></i>Existing Services
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Service Name</th>
+                                <th>Base Price (in Rupees)</th>
+                                <th>Time Required</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for service in services %}
+                            <tr>
+                                <td>{{ service.service_id }}</td>
+                                <td>{{ service.service_name }}</td>
+                                <td>{{ service.base_price }}Rupees</td>
+                                <td>{{ service.time_required }} days</td>
+                                <td>{{ service.description }}</td>
+                                <td>
+                                    <a href="/edit_service/{{ service.service_id }}" class="btn btn-warning btn-sm">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="/delete_service/{{ service.service_id }}" method="POST" style="display:inline;">
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-    <h2>Professionals</h2>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Professional ID</th>
-                <th>Name</th>
-                <th>Experience</th>
-                <th>Service Name</th>
-                <th>Uploaded Document</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for professional in professionals %}
-            <tr>
-                <td>{{ professional.id }}</td>
-                <td>{{ professional.fullname }}</td>
-                <td>{{ professional.experience }}</td>
-                <td>{{ professional.service_name }}</td>
-                <td>
-                    {% if professional.document %}
-                <a href="{{ url_for('serve_file', filename=professional.document) }}" target="_blank">View Document</a>
-                {% else %}
-                No Document
-                {% endif %}
-                </td>
-                <td>{{ professional.status }}</td>
-                <td>
-                    {% if professional.status == "Pending" %}
-                    <form action="/approve_professional/{{ professional.id }}" method="POST" style="display:inline;">
-                        <button type="submit" class="btn btn-success btn-sm">Approve</button>
-                    </form>
-                    <form action="/reject_professional/{{ professional.id }}" method="POST" style="display:inline;">
-                        <button type="submit" class="btn btn-warning btn-sm">Reject</button>
-                    </form>
-                    {% endif %}
-                    <form action="/delete_professional/{{ professional.id }}" method="POST" style="display:inline;">
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-   </div>
-
+        <!-- Professionals Table -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <h2 class="mb-0">
+                    <i class="fas fa-user-tie me-2 text-primary"></i>Professionals
+                </h2>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Experience</th>
+                                <th>Service Name</th>
+                                <th>Document</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for professional in professionals %}
+                            <tr>
+                                <td>{{ professional.id }}</td>
+                                <td>{{ professional.fullname }}</td>
+                                <td>{{ professional.experience }}</td>
+                                <td>{{ professional.service_name }}</td>
+                                <td>
+                                    {% if professional.document %}
+                                    <a href="{{ url_for('serve_file', filename=professional.document) }}" class="btn btn-sm btn-outline-primary" target="_blank">
+                                        <i class="fas fa-file-alt me-1"></i>View
+                                    </a>
+                                    {% else %}
+                                    <span class="text-muted">No Document</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="badge {% if professional.status == 'Pending' %}bg-warning{% elif professional.status == 'Approved' %}bg-success{% else %}bg-danger{% endif %}">
+                                        {{ professional.status }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if professional.status == "Pending" %}
+                                    <form action="/approve_professional/{{ professional.id }}" method="POST" style="display:inline;">
+                                        <button type="submit" class="btn btn-success btn-sm">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                    </form>
+                                    <form action="/reject_professional/{{ professional.id }}" method="POST" style="display:inline;">
+                                        <button type="submit" class="btn btn-warning btn-sm">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </form>
+                                    {% endif %}
+                                    <form action="/delete_professional/{{ professional.id }}" method="POST" style="display:inline;">
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/theme-toggle.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

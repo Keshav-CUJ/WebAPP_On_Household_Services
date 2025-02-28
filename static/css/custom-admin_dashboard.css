@@ -1,0 +1,198 @@
+:root {
+    --primary-color: #2563eb;
+    --secondary-color: #475569;
+    --success-color: #22c55e;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+    --background-color: #f8fafc;
+    --text-color: #1e293b;
+    --form-bg: white;
+}
+
+/* Dark theme variables */
+[data-theme="dark"] {
+    --primary-color: #60a5fa;
+    --secondary-color: #94a3b8;
+    --success-color: #4ade80;
+    --background-color: #1e293b;
+    --text-color: #f1f5f9;
+    --border-color: #475569;
+    --form-bg: #2c3e50;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Navbar Styling */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1rem 0;
+    background-color: var(--background-color) !important;
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.3s ease;
+}
+
+[data-theme="dark"] .navbar {
+    background-color: #1a202c !important;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    color: var(--primary-color) !important;
+}
+
+.nav-link {
+    font-weight: 500;
+    transition: color 0.3s ease;
+    color: var(--text-color) !important;
+}
+
+.nav-link:hover {
+    color: var(--primary-color) !important;
+}
+
+/* Button Styling */
+.btn {
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: #1d4ed8;
+    border-color: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+.btn-warning {
+    background-color: var(--warning-color);
+    border-color: var(--warning-color);
+    color: white;
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    border-color: var(--danger-color);
+}
+
+.btn-success {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+}
+
+/* Form Styling */
+.form-control {
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    padding: 0.75rem;
+    transition: border-color 0.3s ease;
+    transition: all 0.3s ease;
+    background-color: var(--form-bg);
+    color: var(--text-color);
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+    background-color: var(--background-color);
+}
+
+[data-theme="dark"] .form-control {
+    background-color: var(--form-bg);
+    border-color: var(--border-color);
+}
+
+.form-label {
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+
+/* Table Styling */
+.table {
+    background-color: var(--background-color);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+[data-theme="dark"] .table {
+    background-color: var(--form-bg);
+}
+
+.table thead th {
+    background-color: rgba(241, 245, 249, 0.1);
+    border-bottom: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    color: var(--secondary-color);
+}
+
+.table td {
+    vertical-align: middle;
+    padding: 1rem;
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+
+/* Card and Container Styling */
+.card {
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+[data-theme="dark"] .card {
+    background-color: var(--form-bg);
+}
+.card-header {
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--background-color) !important;
+}
+[data-theme="dark"] .card-header {
+    background-color: var(--form-bg) !important;
+}
+
+.container {
+    max-width: 1200px;
+    padding: 2rem 1rem;
+}
+
+/* Badge Styling */
+[data-theme="dark"] .badge {
+    color: #fff;
+}
+
+/* Loading Animation */
+.loading {
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .table-responsive {
+        border-radius: 12px;
+        overflow-x: auto;
+    }
+    
+    .btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.875rem;
+    }
+}

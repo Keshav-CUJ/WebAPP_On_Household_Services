@@ -1,33 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login</title>
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/admin-login.css') }}" rel="stylesheet">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const currentTheme = localStorage.getItem("theme") || "light";
+            document.documentElement.setAttribute("data-theme", currentTheme);
+        });
+    </script>
+
 </head>
 <body>
-    <div class="container d-flex justify-content-center align-items-center vh-100">
-        <div class="card shadow-lg p-4" style="width: 22rem;">
-            <h1 class="text-center mb-4">Admin Login</h1>
-            <form method="POST" action="/admin_login">
+    <!-- Page Transition Element -->
+    <div class="page-transition"></div>
+
+    <div class="container">
+        <div class="card p-4">
+            <h1>
+                <i class="fas fa-user-shield me-2"></i>Admin Login
+            </h1>
+            <form method="POST" action="/admin_login" id="loginForm">
                 <div class="mb-3">
-                    <label for="user_id" class="form-label">User ID:</label>
+                    <label for="user_id" class="form-label">
+                        <i class="fas fa-user me-2"></i>User ID
+                    </label>
                     <input type="text" name="user_id" id="user_id" class="form-control" required>
                 </div>
-                
+
                 <div class="mb-3">
-                    <label for="password" class="form-label">Password:</label>
+                    <label for="password" class="form-label">
+                        <i class="fas fa-lock me-2"></i>Password
+                    </label>
                     <input type="password" name="password" id="password" class="form-control" required>
                 </div>
-                
-                <button type="submit" class="btn btn-primary w-100">Login</button>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                </button>
             </form>
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
+    <script>
+        // Page load animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const transition = document.querySelector('.page-transition');
+            transition.classList.add('fade-out');
+        });
+
+        // Form submission animation
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            const transition = document.querySelector('.page-transition');
+            transition.style.opacity = '1';
+            transition.style.pointerEvents = 'auto';
+        });
+
+        // Theme detection from localStorage (using your existing theme-toggle.js functionality)
+        document.addEventListener("DOMContentLoaded", function () {
+            const savedTheme = localStorage.getItem("theme") || "light";
+            document.documentElement.setAttribute("data-theme", savedTheme);
+        });
+    </script>
+    <script src="{{ url_for('static', filename='js/theme-toggle.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -1,33 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Professional Dashboard</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{{ url_for('static', filename='css/professional-dashboard.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='js/theme-toggle.js') }}"></script>
 </head>
 <body>
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="actionToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <i class="fas fa-info-circle text-primary me-2"></i>
+                <strong class="me-auto">Notification</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body"></div>
+        </div>
+    </div>
+
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">A-Z Household</a>
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-home me-2"></i>
+                A-Z Services
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                <i class="fas fa-bars"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item">
-                        <a class="nav-link" href="/professional_dashboard">Home</a>
+                        <a class="nav-link" href="/professional_dashboard">
+                            <i class="fas fa-tachometer-alt me-1"></i> Home
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/professional_search">Search</a>
+                        <a class="nav-link" href="/professional_search">
+                            <i class="fas fa-search me-1"></i> Search
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/professional_summary">Summary</a>
+                        <a class="nav-link" href="/professional_summary">
+                            <i class="fas fa-chart-bar me-1"></i> Summary
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/logout">Logout</a>
+                        <a class="nav-link" href="/logout">
+                            <i class="fas fa-sign-out-alt me-1"></i> Logout
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -36,80 +66,168 @@
 
     <!-- Main Content -->
     <div class="container mt-4">
-        <h2>Today's Requests</h2>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Request ID</th>
-                    <th>Customer Name</th>
-                    <th>Address</th>
-                    <th>Pincode</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% if today_requests %}
-                    {% for request, customer_name, customer_address, customer_pincode in today_requests %}
-                    <tr>
-                        <td>{{ request.request_id }}</td>
-                        <td>{{ customer_name }}</td>
-                        <td>{{ customer_address }}</td>
-                        <td>{{ customer_pincode }}</td>
-                        <td>{{ request.service_status }}</td>
-                        <td>
-                            {% if request.service_status == 'Requested' %}
-                                <form action="{{ url_for('accept_request', request_id=request.request_id) }}" method="POST" style="display:inline;">
-                                    <button type="submit" class="btn btn-success btn-sm">Accept</button>
-                                </form>
-                                <form action="{{ url_for('reject_request', request_id=request.request_id) }}" method="POST" style="display:inline;">
-                                    <button type="submit" class="btn btn-danger btn-sm">Reject</button>
-                                </form>
+        <div class="card shadow-sm fade-in">
+            <div class="card-header bg-white">
+                <h2 class="mb-0">
+                    <i class="fas fa-clipboard-list me-2 text-primary"></i>
+                    Today's Requests
+                </h2>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Request ID</th>
+                                <th>Customer Name</th>
+                                <th>Address</th>
+                                <th>Pincode</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if today_requests %}
+                                {% for request, customer_name, customer_address, customer_pincode in today_requests %}
+                                <tr class="align-middle">
+                                    <td><span class="badge bg-secondary">#{{ request.request_id }}</span></td>
+                                    <td>
+                                        <i class="fas fa-user me-2 text-muted"></i>
+                                        {{ customer_name }}
+                                    </td>
+                                    <td>
+                                        <i class="fas fa-location-dot me-2 text-muted"></i>
+                                        {{ customer_address }}
+                                    </td>
+                                    <td>
+                                        <i class="fas fa-map-pin me-2 text-muted"></i>
+                                        {{ customer_pincode }}
+                                    </td>
+                                    <td>
+                                        <span class="status-badge status-{{ request.service_status.lower() }}">
+                                            {{ request.service_status }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {% if request.service_status == 'Requested' %}
+                                            <form action="{{ url_for('accept_request', request_id=request.request_id) }}" method="POST" class="d-inline">
+                                                <button type="submit" class="btn btn-success btn-sm action-btn">
+                                                    <i class="fas fa-check me-1"></i> Accept
+                                                </button>
+                                            </form>
+                                            <form action="{{ url_for('reject_request', request_id=request.request_id) }}" method="POST" class="d-inline">
+                                                <button type="submit" class="btn btn-danger btn-sm action-btn">
+                                                    <i class="fas fa-times me-1"></i> Reject
+                                                </button>
+                                            </form>
+                                        {% else %}
+                                            <button class="btn btn-secondary btn-sm" disabled>
+                                                {{ request.service_status }}
+                                            </button>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
                             {% else %}
-                                <button class="btn btn-secondary btn-sm" disabled>
-                                    {{ request.service_status }}
-                                </button>
+                                <tr>
+                                    <td colspan="6" class="text-center py-4">
+                                        <i class="fas fa-inbox fa-2x mb-3 text-muted"></i>
+                                        <p class="mb-0">No requests for today.</p>
+                                    </td>
+                                </tr>
                             {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                {% else %}
-                    <tr>
-                        <td colspan="6" class="text-center">No requests for today.</td>
-                    </tr>
-                {% endif %}
-            </tbody>
-        </table>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-        <h2 class="text-center mt-5">Closed Services</h2>
-        <table class="table table-striped mt-4">
-            <thead>
-                <tr>
-                    <th>Service ID</th>
-                    <th>Customer Name</th>
-                    <th>Address</th>
-                    <th>Pincode</th>
-                    <th>Date of Completion</th>
-                    <th>Rating</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for service in closed_services %}
-                <tr>
-                    <td>{{ service.service_id }}</td>
-                    <td>{{ service.customer_name }}</td>
-                    <td>{{ service.address }}</td>
-                    <td>{{ service.pincode }}</td>
-                    <td>{{ service.date_of_completion.strftime('%Y-%m-%d') }}</td>
-                    <td>{{ service.rating }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
+        <div class="card shadow-sm mt-4 fade-in">
+            <div class="card-header bg-white">
+                <h2 class="mb-0">
+                    <i class="fas fa-check-circle me-2 text-success"></i>
+                    Closed Services
+                </h2>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Service ID</th>
+                                <th>Customer Name</th>
+                                <th>Address</th>
+                                <th>Pincode</th>
+                                <th>Date of Completion</th>
+                                <th>Rating</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for service in closed_services %}
+                            <tr class="align-middle">
+                                <td><span class="badge bg-success">#{{ service.service_id }}</span></td>
+                                <td>
+                                    <i class="fas fa-user me-2 text-muted"></i>
+                                    {{ service.customer_name }}
+                                </td>
+                                <td>
+                                    <i class="fas fa-location-dot me-2 text-muted"></i>
+                                    {{ service.address }}
+                                </td>
+                                <td>
+                                    <i class="fas fa-map-pin me-2 text-muted"></i>
+                                    {{ service.pincode }}
+                                </td>
+                                <td>
+                                    <i class="fas fa-calendar me-2 text-muted"></i>
+                                    {{ service.date_of_completion.strftime('%Y-%m-%d') }}
+                                </td>
+                                <td>
+                                    <div class="rating">
+                                        {% for i in range(service.rating|int) %}
+                                            <i class="fas fa-star"></i>
+                                        {% endfor %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Bootstrap Bundle with Popper -->
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Toast notification function
+        function showToast(message) {
+            const toast = document.getElementById('actionToast');
+            const toastBody = toast.querySelector('.toast-body');
+            toastBody.textContent = message;
+            const bsToast = new bootstrap.Toast(toast);
+            bsToast.show();
+        }
+
+        // Add click handlers for action buttons
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const action = this.textContent.trim();
+                showToast(`Request ${action}ed successfully!`);
+            });
+        });
+
+
+        // Theme detection from localStorage
+        document.addEventListener("DOMContentLoaded", function () {
+            const savedTheme = localStorage.getItem("theme") || "light";
+            document.documentElement.setAttribute("data-theme", savedTheme);
+        });
+    </script>
+    <script src="{{ url_for('static', filename='js/theme-toggle.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

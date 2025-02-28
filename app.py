@@ -44,7 +44,7 @@ class Professional(db.Model):
     pincode = db.Column(db.String(6), nullable=False)
     status = db.Column(db.String(20), nullable=False, default="Pending")  # New column for admin status
      # Relationships
-    requests = db.relationship('ServiceRequest', back_populates='professional')  # No cascade here
+    requests = db.relationship('ServiceRequest', back_populates='professional', cascade="all, delete")  # No cascade here
     
 class Service(db.Model):
     __tablename__ = 'services'
@@ -75,7 +75,7 @@ class ServiceRequest(db.Model):
 
     # Relationships
     service = db.relationship('Service', back_populates='requests')
-    feedback = db.relationship('Feedback', back_populates='service_request', uselist=False)
+    feedback = db.relationship('Feedback', back_populates='service_request', uselist=False, cascade="all, delete")
     professional = db.relationship('Professional', back_populates='requests')    # No cascade here
     
 class Feedback(db.Model):

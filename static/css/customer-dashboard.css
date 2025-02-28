@@ -1,0 +1,230 @@
+/* Custom Variables */
+:root {
+    --primary-color: #0d6efd;
+    --success-color: #198754;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --background-color: #f8f9fa;
+    --text-color: #1e293b;
+    --border-color: #e2e8f0;
+    --form-bg: white;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --transition-speed: 0.3s;
+}
+
+[data-theme="dark"] {
+    --primary-color: #60a5fa;
+    --success-color: #22c55e;
+    --danger-color: #ef4444;
+    --warning-color: #eab308;
+    --background-color: #1e293b;
+    --text-color: #f1f5f9;
+    --border-color: #475569;
+    --form-bg: #2c3e50;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+/* General Styles */
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+
+/* Navbar Styles */
+.navbar {
+    background-color: var(--form-bg) !important;
+    transition: all var(--transition-speed);
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.navbar-brand {
+    font-weight: 600;
+    color: var(--primary-color) !important;
+}
+
+.nav-link {
+    position: relative;
+    padding: 0.5rem 1rem;
+    transition: color var(--transition-speed);
+    color: var(--text-color) !important;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: all var(--transition-speed);
+    transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Navbar Mobile Styles */
+.navbar-toggler {
+    border: none;
+    color: var(--text-color);
+    padding: 0.5rem;
+    transition: color var(--transition-speed);
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+.navbar-toggler i {
+    font-size: 1.5rem;
+}
+
+@media (max-width: 991px) {
+    .navbar-collapse {
+        background-color: var(--form-bg);
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px var(--shadow-color);
+        margin-top: 1rem;
+        padding: 1rem;
+    }
+
+    .navbar-nav {
+        gap: 0.5rem;
+    }
+
+    .nav-link {
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+    }
+
+    .nav-link:hover {
+        background-color: var(--border-color);
+    }
+}
+
+/* Welcome Section */
+.welcome-section {
+    background-color: var(--form-bg);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px var(--shadow-color);
+    animation: fadeIn 0.5s ease-out;
+}
+
+.welcome-section h1 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+/* Table Styles */
+.table-container {
+    background-color: var(--form-bg);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px var(--shadow-color);
+    animation: slideUp 0.5s ease-out;
+}
+
+.table-container h2 {
+    color: var(--text-color);
+    margin-bottom: 1.5rem;
+}
+
+.table {
+    color: var(--text-color);
+}
+
+.table th {
+    background-color: var(--form-bg);
+    color: var(--text-color);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.table td {
+    background-color: var(--form-bg);
+    vertical-align: middle;
+    color: var(--text-color);
+}
+
+/* Button Styles */
+.btn {
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    transition: all var(--transition-speed);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    border-color: var(--danger-color);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Theme Toggle */
+.theme-toggle {
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all var(--transition-speed);
+    color: var(--text-color);
+}
+
+.theme-toggle:hover {
+    background-color: var(--border-color);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .table-container {
+        padding: 1rem;
+    }
+
+    .btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.875rem;
+    }
+}
