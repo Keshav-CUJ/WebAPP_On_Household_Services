@@ -19,7 +19,7 @@ Check out the concept behind this project:
 
 ## 📚 What I Learned
 
-✅ Implementing **migrations** for database version control  
+✅ Implementing **migrations** for database version control and **docker** 
 ✅ **Plotting graphs** 📊 for data visualization  
 ✅ Managing **complex relationships** among database tables 🔄  
 
